@@ -19,4 +19,6 @@ RUN npm ci --omit=dev
 
 COPY --from=builder /app/build ./build
 
+RUN mkdir -p /app/actual-data
+
 CMD ["node", "build/index.js"]
