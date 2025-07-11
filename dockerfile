@@ -24,7 +24,7 @@ RUN npm ci --omit=dev
 
 # 2) Copia build + views
 COPY --from=builder /app/build    ./build
-COPY --from=builder /app/views    ./views
+COPY --from=builder /app/src/views ./views
 
 # 3) Cria pasta de dados, se precisar
 RUN mkdir -p /app/actual-data
