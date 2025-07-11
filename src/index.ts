@@ -10,9 +10,8 @@ const app = new Hono()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const eta = new Eta({ views: path.join(__dirname, 'views') })
-// TODO desconsiderar poupado
-app.get('/', async (c) => {
 
+app.get('/', async (c) => {
   const now = new Date();
   const ano = now.getFullYear();
   const mes = now.getMonth() + 1
@@ -29,8 +28,19 @@ app.get('/', async (c) => {
     }))
   }
 
-  // @ts-ignore
-  let poupado = budget_data.categoryGroups.find((group) => group.id === '9375bc52-e6df-4fd3-8dc0-77f859afc7bb')?.categories.find((category) => category.id === 'be140a14-d3f5-4746-be80-0c3776cec629')?.budgeted || 0;
+
+  let poupado = 0;
+  if (
+    budget_data &&
+    typeof budget_data === 'object' &&
+    Array.isArray((budget_data as any).categoryGroups)
+  ) {
+    poupado =
+      (budget_data as any).categoryGroups
+        .find((group: any) => group.id === '9375bc52-e6df-4fd3-8dc0-77f859afc7bb')
+        ?.categories.find((category: any) => category.id === 'be140a14-d3f5-4746-be80-0c3776cec629')
+        ?.budgeted || 0;
+  }
 
   //cálculos para gráfico dos dias
   let total_orcado = ((budget_data.totalBudgeted) / -100) - poupado / 100;
@@ -39,13 +49,13 @@ app.get('/', async (c) => {
   let orcamento_sobrando_por_dia = orcamento_sobrando / dias_faltando;
 
   // para gerar barras de categorias
-  // @ts-ignore
-  let categorias = budget_data.categoryGroups.flatMap((group) =>  group.categories.filter((category) => typeof category.budgeted === 'number' && typeof category.spent === 'number').filter((category) => category.budgeted !== 0 || category.balance !== 0).map((category) => ({
-          nome: category.name,
-          sobrando: category.balance / 100,
-          porcentagem: 1 - Math.min(1, (category.balance! / 100) / (category.budgeted! / 100)),
-        }))
-    );
+
+  let categorias = budget_data.categoryGroups.flatMap((group: any) => group?.categories.filter((category: any) => typeof category.budgeted === 'number' && typeof category.spent === 'number').filter((category: any) => category.budgeted !== 0 || category.balance !== 0).map((category: any) => ({
+    nome: category.name,
+    sobrando: category.balance / 100,
+    porcentagem: 1 - Math.min(1, (category.balance! / 100) / (category.budgeted! / 100)),
+  }))
+  );
 
 
   return c.html(eta.render('index', {
