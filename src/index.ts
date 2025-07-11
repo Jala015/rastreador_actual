@@ -29,6 +29,7 @@ app.get('/', async (c) => {
     }))
   }
 
+  // @ts-ignore
   let poupado = budget_data.categoryGroups.find((group) => group.id === '9375bc52-e6df-4fd3-8dc0-77f859afc7bb')?.categories.find((category) => category.id === 'be140a14-d3f5-4746-be80-0c3776cec629')?.budgeted || 0;
 
   //cálculos para gráfico dos dias
@@ -38,12 +39,8 @@ app.get('/', async (c) => {
   let orcamento_sobrando_por_dia = orcamento_sobrando / dias_faltando;
 
   // para gerar barras de categorias
-  let categorias = budget_data.categoryGroups
-    .flatMap((group) =>
-      group.categories
-        .filter((category) => typeof category.budgeted === 'number' && typeof category.spent === 'number')
-        .filter((category) => category.budgeted !== 0 || category.balance !== 0)
-        .map((category) => ({
+  // @ts-ignore
+  let categorias = budget_data.categoryGroups.flatMap((group) =>  group.categories.filter((category) => typeof category.budgeted === 'number' && typeof category.spent === 'number').filter((category) => category.budgeted !== 0 || category.balance !== 0).map((category) => ({
           nome: category.name,
           sobrando: category.balance / 100,
           porcentagem: 1 - Math.min(1, (category.balance! / 100) / (category.budgeted! / 100)),
