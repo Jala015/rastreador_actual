@@ -11,6 +11,8 @@
 # deps
 node_modules/
 
+actual-data/*
+
 # env
 .env
 .env.production
