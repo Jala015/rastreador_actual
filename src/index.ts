@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url'
 const app = new Hono()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const eta = new Eta({ views: path.join(__dirname, 'views') })
+const eta = new Eta({ views: path.join(__dirname, '../views') })
 
 app.get('/', async (c) => {
   const now = new Date();
