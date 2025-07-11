@@ -1,0 +1,13 @@
+services:
+  actual_tracker:
+    container_name: actual_tracker
+    restart: unless-stopped
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - ACTUAL_URL='URL'
+      - ACTUAL_PASSWORD='PASSWORD'
+      - ACTUAL_BUDGET_SYNC_CODE='0000'
+
+  

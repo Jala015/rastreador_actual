@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Actual Tracker</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.violet.min.css">
+</head>
+
+<body>
+  <main class="container">
+    <article><%= it.message %></article>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Actual Tracker</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.violet.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <% let fundo = (it.gasto/it.orcado)<(it.dia/it.total_dias) ? 'lightgreen' : 'tomato' %>
+  <main class="container" style="margin-top: 2rem;">
+
+    <h2 style="text-align:center"><%= it.dia %>/<%= it.mes %>/<%= it.ano %></h2>
+
+    <article>
+
+
+      <% if (it.gasto<it.orcado) { %>
+      <p>R$ <%= it.orcamento_sobrando_por_dia %> sobrando por dia.</p>
+      <% } else { %>
+      <p style="color: tomato;">Você estourou seu orçamento!!</p>
+      <% } %>
+      <div class="grid">
+        <p style="text-align: left; color:<%= fundo %>">Gasto: R$ <%= it.gasto.toFixed(2) %></p>
+
+        <p style="text-align: right; color: #9062CA">Orçado: R$ <%= it.orcado.toFixed(2) %></p>
+
+
+      </div>
+      <div class="progress-wrapper">
+        <progress value=<%= it.dia %> max=<%= it.total_dias %>></progress>
+        <input type="range" min="0" value=<%= Math.abs(it.gasto) %> max=<%= Math.abs(it.orcado) %> />
+      </div>
+    </article>
+
+
+    <% if (it.categorias) { %>
+    <br>
+    <hr />
+ <br>
+
+
+    <% it.categorias
+      .sort((a, b) => a.porcentagem - b.porcentagem)
+      .forEach(function(c){ %>
+
+    <div class="grid">
+      <h6><%= c.nome %></h6>
+      <% if (c.sobrando > 0) { %>
+      <p style="text-align: right; font-family: 'mono'">Sobrando: R$ <%= c.sobrando.toFixed(2) %></p>
+      <% } %>
+    </div>
+    <progress value="<%=c.porcentagem%>" max="1" min="0"></progress>
+
+    <br><br>
+    <% }) %>
+
+    <% } %>
+
+  </main>
+
+
+  <style>
+    .grid {
+      font-size: 0.75rem;
+    }
+
+    .progress-wrapper {
+      position: relative;
+      width: 100%;
+      height: 20px;
+      margin-top: -0.8rem;
+      margin-bottom: 1.25rem;
+    }
+
+
+    .progress-wrapper:before {
+      content: '1';
+      position: absolute;
+      top: 1.2rem;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      text-align: left;
+      z-index: 3;
+      font-size: 0.75rem;
+    }
+
+    .progress-wrapper:after {
+      content: '<%= it.total_dias %>';
+      position: absolute;
+      top: 1.2rem;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      text-align: right;
+      z-index: 3;
+      font-size: 0.75rem;
+    }
+
+
+    [type="range"]::-moz-range-thumb {
+      background: <%=fundo %>;
+      border: none;
+      width: 0.5rem;
+      border-radius: 0.25rem;
+    }
+
+    [type="range"]::-moz-range-track {
+      background: transparent;
+    }
+
+    [type="range"]::-moz-range-progress {
+      background: none;
+    }
+
+
+    input[type="range"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      pointer-events: none;
+      width: 100%;
+      height: 20px;
+    }
+
+    .progress-wrapper>progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      z-index: 1;
+    }
+
+    .progress-wrapper>progress::-moz-progress-bar {
+      background: #f0f8ff66
+    }
+  </style>
+
+</body>
+
+</html>

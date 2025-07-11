@@ -4,5 +4,12 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"shadowtime2000.eta-vscode"
+			]
+		}
+	},
   "remoteUser": "node"
 }
