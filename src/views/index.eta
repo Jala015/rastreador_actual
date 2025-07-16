@@ -44,6 +44,7 @@
 
     <% it.categorias
       .sort((a, b) => a.porcentagem - b.porcentagem)
+      .filter(c => c.nome != 'Poupado')
       .forEach(function(c){ %>
 
     <div class="grid">
